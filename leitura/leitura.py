@@ -42,7 +42,7 @@ class LeitorSerialCSV:
 
     def registrar_dados(self):
         if self.temperatura is not None and self.umidade is not None:
-            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+            timestamp = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
             with open(self.arquivo_csv, mode='a', newline='') as file:
                 writer = csv.writer(file)
                 writer.writerow([self.id_sequencial, timestamp, self.temperatura, self.umidade])
