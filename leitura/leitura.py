@@ -81,7 +81,7 @@ try:
                 umidade = None
 
         # Atualizar uma vez por segundo
-        time.sleep(1)
+        time.sleep(5)
 
 except KeyboardInterrupt:
     print("Leitura interrompida pelo usuário.")
