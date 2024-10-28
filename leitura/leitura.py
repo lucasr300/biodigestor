@@ -13,6 +13,7 @@ class LeitorSerialCSV:
         self.arquivo_csv = arquivo_csv
         self.temperatura = None
         self.umidade = None
+        self.metano = None
         self.id_sequencial = self.obter_ultimo_id()
         self.serial = serial.Serial(self.porta_serial, self.taxa_transmissao)
         self.configurar_arquivo_csv()
@@ -29,7 +30,7 @@ class LeitorSerialCSV:
         with open(self.arquivo_csv, mode='a', newline='') as file:
             writer = csv.writer(file)
             if file.tell() == 0:
-                writer.writerow(['ID', 'DataHora', 'Temperatura', 'Umidade'])
+                writer.writerow(['ID', 'DataHora', 'Temperatura', 'Umidade', 'Metano'])
 
     def ler_dados_serial(self):
         if self.serial.in_waiting > 0:
@@ -38,18 +39,21 @@ class LeitorSerialCSV:
                 self.temperatura = float(linha[1:])
             elif linha.startswith('U'):
                 self.umidade = float(linha[1:])
+            elif linha.startswith('M'):
+                self.metano = float(linha[1:])
             self.registrar_dados()
 
     def registrar_dados(self):
-        if self.temperatura is not None and self.umidade is not None:
+        if self.temperatura is not None and self.umidade is not None and self.metano is not None:
             timestamp = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
             with open(self.arquivo_csv, mode='a', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow([self.id_sequencial, timestamp, self.temperatura, self.umidade])
-            print(f"ID: {self.id_sequencial}, Data e Hora: {timestamp}, Temperatura: {self.temperatura}°C, Umidade: {self.umidade}%")
+                writer.writerow([self.id_sequencial, timestamp, self.temperatura, self.umidade, self.metano])
+            print(f"ID: {self.id_sequencial}, Data e Hora: {timestamp}, Temperatura: {self.temperatura}°C, Umidade: {self.umidade}%, Metano: {self.metano}ppm")
             self.id_sequencial += 1
             self.temperatura = None
             self.umidade = None
+            self.metano = None
 
     def iniciar(self):
         try:

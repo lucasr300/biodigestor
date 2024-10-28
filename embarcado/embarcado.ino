@@ -14,6 +14,8 @@ void setup() {
   dht.temperature().getSensor(&sensor);
   dht.humidity().getSensor(&sensor);
   delayMS = sensor.min_delay / 1000;
+
+  pinMode(A0, INPUT);
 }
 
 void loop() {
@@ -36,4 +38,7 @@ void loop() {
     Serial.print("U ");
     Serial.println(event.relative_humidity);
   }
+
+  Serial.print("M ");
+  Serial.println(analogRead(A0));
 }
