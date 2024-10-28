@@ -5,6 +5,8 @@ from datetime import datetime
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 import threading
 import os
+from previsor import prever_proxima_temperatura
+
 
 class LeitorSerialCSV:
     def __init__(self, porta_serial, taxa_transmissao, arquivo_csv):
@@ -30,7 +32,7 @@ class LeitorSerialCSV:
         with open(self.arquivo_csv, mode='a', newline='') as file:
             writer = csv.writer(file)
             if file.tell() == 0:
-                writer.writerow(['ID', 'DataHora', 'Temperatura', 'Umidade', 'Metano'])
+                writer.writerow(['ID', 'DataHora', 'TemperaturaAtual', 'TemperaturaPrevista', 'Umidade', 'Metano'])
 
     def ler_dados_serial(self):
         if self.serial.in_waiting > 0:
@@ -46,10 +48,17 @@ class LeitorSerialCSV:
     def registrar_dados(self):
         if self.temperatura is not None and self.umidade is not None and self.metano is not None:
             timestamp = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+
             with open(self.arquivo_csv, mode='a', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow([self.id_sequencial, timestamp, self.temperatura, self.umidade, self.metano])
-            print(f"ID: {self.id_sequencial}, Data e Hora: {timestamp}, Temperatura: {self.temperatura}°C, Umidade: {self.umidade}%, Metano: {self.metano}ppm")
+                writer.writerow([self.id_sequencial,
+                                timestamp,
+                                self.temperatura,
+                                prever_proxima_temperatura() or self.temperatura,
+                                self.umidade,
+                                self.metano])
+
+
             self.id_sequencial += 1
             self.temperatura = None
             self.umidade = None

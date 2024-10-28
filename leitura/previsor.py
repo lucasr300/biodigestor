@@ -5,6 +5,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 
+
 class PrevisorTemperatura:
     def __init__(self, temperaturas, tamanho_janela=3):
         self.temperaturas = temperaturas
@@ -51,17 +52,16 @@ class PrevisorTemperatura:
 def prever_proxima_temperatura():
     def carregar_dados_csv(caminho_arquivo):
         df = pd.read_csv(caminho_arquivo)
-        return df['Temperatura'].values  # Retorna a coluna de temperaturas como um array
+        return df['TemperaturaAtual'].values
 
-    caminho_arquivo = 'leituras.csv'
-    temperaturas = carregar_dados_csv(caminho_arquivo)
-    previsor = PrevisorTemperatura(temperaturas)
-    X_teste, y_teste = previsor.treinar()
+    try:
+        caminho_arquivo = 'leituras.csv'
+        temperaturas = carregar_dados_csv(caminho_arquivo)
+        previsor = PrevisorTemperatura(temperaturas)
+        X_teste, y_teste = previsor.treinar()
 
-    # Prevendo a próxima temperatura
-    dados_ultimo = np.array(temperaturas[-3:]).reshape(-1, 1)
-    proxima_temperatura = previsor.prever(dados_ultimo)
-    print(f'Próxima temperatura prevista: {proxima_temperatura:.2f} °C')
-
-
-prever_proxima_temperatura()
+        dados_ultimo = np.array(temperaturas[-3:]).reshape(-1, 1)
+        proxima_temperatura = previsor.prever(dados_ultimo)
+        return float(proxima_temperatura)
+    except:
+        return None
