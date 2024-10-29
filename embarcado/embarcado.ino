@@ -26,7 +26,7 @@ void loop() {
   if (isnan(event.temperature)){
     Serial.println("E Erro na leitura da Temperatura!");
   } else {
-    Serial.print("T ");
+    Serial.print("TEMP ");
     Serial.println(event.temperature);
   }
 
@@ -35,10 +35,10 @@ void loop() {
     Serial.println("E Erro na leitura da Umidade!");
   }
   else {
-    Serial.print("U ");
+    Serial.print("UMID ");
     Serial.println(event.relative_humidity);
   }
 
-  Serial.print("M ");
+  Serial.print("META ");
   Serial.println(analogRead(A0));
 }

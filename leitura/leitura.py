@@ -37,12 +37,13 @@ class LeitorSerialCSV:
     def ler_dados_serial(self):
         if self.serial.in_waiting > 0:
             linha = self.serial.readline().decode('latin1', errors='ignore').strip()
-            if linha.startswith('T'):
-                self.temperatura = float(linha[1:])
-            elif linha.startswith('U'):
-                self.umidade = float(linha[1:])
-            elif linha.startswith('M'):
-                self.metano = float(linha[1:])
+            print(linha)
+            if linha.startswith('TEMP'):
+                self.temperatura = float(linha[4:])
+            elif linha.startswith('UMID'):
+                self.umidade = float(linha[4:])
+            elif linha.startswith('META'):
+                self.metano = float(linha[4:])
             self.registrar_dados()
 
     def registrar_dados(self):
