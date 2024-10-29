@@ -7,14 +7,14 @@ from tensorflow.keras.layers import LSTM, Dense, Dropout
 
 
 class PrevisorTemperatura:
-    def __init__(self, temperaturas, tamanho_janela=3):
+    def __init__(self, temperaturas, tamanho_janela=30):
         self.temperaturas = temperaturas
         self.tamanho_janela = tamanho_janela
         self.scaler = MinMaxScaler(feature_range=(0, 1))
         self.modelo = self.construir_modelo()
 
     def preparar_dados(self):
-        dados = pd.DataFrame(self.temperaturas, columns=['Temperatura'])
+        dados = pd.DataFrame(self.temperaturas, columns=['TemperaturaAtual'])
         dados_normalizados = self.scaler.fit_transform(dados)
         X, y = self.criar_conjunto_dados(dados_normalizados)
         X = X.reshape(X.shape[0], X.shape[1], 1)
