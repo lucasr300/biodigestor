@@ -2,7 +2,7 @@
 #include <DHT.h>
 #include <DHT_U.h>
 #define DHTTYPE      DHT22
-#define DHTPIN 2         
+#define DHTPIN 3
 
 DHT_Unified dht(DHTPIN, DHTTYPE);
 uint32_t delayMS;
@@ -16,6 +16,8 @@ void setup() {
   delayMS = sensor.min_delay / 1000;
 
   pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
+  pinMode(A2, INPUT);
 }
 
 void loop() {
@@ -41,4 +43,10 @@ void loop() {
 
   Serial.print("META ");
   Serial.println(analogRead(A0));
+
+  Serial.print("MONO ");
+  Serial.println(analogRead(A1));
+
+  Serial.print("HIDR ");
+  Serial.println(analogRead(A2));
 }

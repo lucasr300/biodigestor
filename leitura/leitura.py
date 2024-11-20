@@ -16,6 +16,8 @@ class LeitorSerialCSV:
         self.temperatura = None
         self.umidade = None
         self.metano = None
+        self.monoxido_de_carbono = None
+        self.hidrogenio = None
         self.id_sequencial = self.obter_ultimo_id()
         self.serial = serial.Serial(self.porta_serial, self.taxa_transmissao)
         self.configurar_arquivo_csv()
@@ -32,7 +34,8 @@ class LeitorSerialCSV:
         with open(self.arquivo_csv, mode='a', newline='') as file:
             writer = csv.writer(file)
             if file.tell() == 0:
-                writer.writerow(['ID', 'DataHora', 'TemperaturaAtual', 'TemperaturaPrevista', 'Umidade', 'Metano'])
+                writer.writerow(['ID', 'DataHora', 'TemperaturaAtual', 'TemperaturaPrevista', 'Umidade',
+                                                    'Metano', 'MonoxidoDeCarbono', 'Hidrogenio'])
 
     def ler_dados_serial(self):
         if self.serial.in_waiting > 0:
@@ -44,6 +47,10 @@ class LeitorSerialCSV:
                 self.umidade = float(linha[4:])
             elif linha.startswith('META'):
                 self.metano = float(linha[4:])
+            elif linha.startswith('MONO'):
+                self.monoxido_de_carbono = float(linha[4:])
+            elif linha.startswith('HIDR'):
+                self.hidrogenio = float(linha[4:])
             self.registrar_dados()
 
     def registrar_dados(self):
@@ -57,7 +64,9 @@ class LeitorSerialCSV:
                                 self.temperatura,
                                 prever_proxima_temperatura() or self.temperatura,
                                 self.umidade,
-                                self.metano])
+                                self.metano,
+                                self.monoxido_de_carbono,
+                                self.hidrogenio])
 
 
             self.id_sequencial += 1
