@@ -24,7 +24,7 @@ void loop() {
 
   dht.temperature().getEvent(&event);
   if (isnan(event.temperature)){
-    Serial.println("E Erro na leitura da Temperatura!");
+    Serial.println("ERRO Erro na leitura da Temperatura!");
   } else {
     Serial.print("TEMP ");
     Serial.println(event.temperature);
@@ -32,7 +32,7 @@ void loop() {
 
   dht.humidity().getEvent(&event);
   if (isnan(event.relative_humidity)){
-    Serial.println("E Erro na leitura da Umidade!");
+    Serial.println("ERRO Erro na leitura da Umidade!");
   }
   else {
     Serial.print("UMID ");
