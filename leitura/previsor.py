@@ -31,15 +31,15 @@ class PrevisorTemperatura:
 
     def construir_modelo(self):
         modelo = Sequential()
-        modelo.add(LSTM(50, return_sequences=True, input_shape=(self.tamanho_janela, 1)))
+        modelo.add(LSTM(25, return_sequences=True, input_shape=(self.tamanho_janela, 1)))
         modelo.add(Dropout(0.2))
-        modelo.add(LSTM(50, return_sequences=False))
+        modelo.add(LSTM(25, return_sequences=False))
         modelo.add(Dropout(0.2))
         modelo.add(Dense(1))
         modelo.compile(optimizer='adam', loss='mean_squared_error')
         return modelo
 
-    def treinar(self, epocas=100, tamanho_batch=1):
+    def treinar(self, epocas=10, tamanho_batch=1):
         X_treino, X_teste, y_treino, y_teste = self.preparar_dados()
         self.modelo.fit(X_treino, y_treino, epochs=epocas, batch_size=tamanho_batch, verbose=2)
         return X_teste, y_teste
@@ -60,8 +60,10 @@ def prever_proxima_temperatura():
         previsor = PrevisorTemperatura(temperaturas)
         X_teste, y_teste = previsor.treinar()
 
-        dados_ultimo = np.array(temperaturas[-3:]).reshape(-1, 1)
+        dados_ultimo = np.array(temperaturas[-30:]).reshape(-1, 1)
         proxima_temperatura = previsor.prever(dados_ultimo)
+        print("Temperatura prevista", proxima_temperatura)
         return float(proxima_temperatura)
     except:
+        print("Erro ao fazer previsao")
         return None
