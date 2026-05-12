@@ -71,5 +71,3 @@ python main.py
 3. Verifique o log de dados e o envio para a IA
 4. Monitore os valores em tempo real e os ajustes automáticos
 
-<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
-
